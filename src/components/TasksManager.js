@@ -94,6 +94,10 @@ export default class TasksManager extends Component {
 		this.setTaskState(taskId, { isRunning: false, isDone: true });
 	};
 
+	removeTask = (taskId) => {
+		this.setTaskState(taskId, { isRemoved: true });
+	};
+
 	clearInterval() {
 		clearInterval(this.interval);
 		this.interval = null;
@@ -135,6 +139,7 @@ export default class TasksManager extends Component {
 
 	render() {
 		const { tasks, task } = this.state;
+		const filteredTasks = tasks.filter((task) => task.isRemoved === false);
 
 		return (
 			<section>
@@ -148,7 +153,7 @@ export default class TasksManager extends Component {
 					<input type='submit' value='Dodaj zadanie' />
 				</form>
 				<section>
-					{tasks.map(({ name, time, id, isRunning, isDone }) => {
+					{filteredTasks.map(({ name, time, id, isRunning, isDone }) => {
 						return (
 							<div key={id}>
 								<header>
@@ -165,7 +170,11 @@ export default class TasksManager extends Component {
 									<button disabled={isDone} onClick={() => this.finishTask(id)}>
 										zakończone
 									</button>
-									<button disabled={!isDone}>usuń</button>
+									<button
+										disabled={!isDone}
+										onClick={() => this.removeTask(id)}>
+										usuń
+									</button>
 								</footer>
 							</div>
 						);
