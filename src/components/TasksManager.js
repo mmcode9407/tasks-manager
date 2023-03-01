@@ -111,13 +111,26 @@ export default class TasksManager extends Component {
 			return { tasks: newTasks };
 		};
 
-		this.setState(newState, () => this.updateTaskInAPI(taskId));
+		this.setState(newState, () => {
+			this.updateTaskInAPI(taskId);
+			this.sortTask(this.state.tasks);
+		});
 	}
 
 	updateTaskInAPI(taskId) {
 		const { tasks } = this.state;
 		const currTask = tasks.find((task) => task.id === taskId);
 		this.updateData(currTask);
+	}
+
+	sortTask(tasks) {
+		const sortedTasks = tasks.sort((a, b) => {
+			return a.isDone - b.isDone;
+		});
+
+		this.setState({
+			tasks: sortedTasks,
+		});
 	}
 
 	render() {
