@@ -137,6 +137,33 @@ export default class TasksManager extends Component {
 		});
 	}
 
+	renderTasks(tasksToRender) {
+		return tasksToRender.map(({ name, time, id, isRunning, isDone }) => {
+			return (
+				<div key={id}>
+					<header>
+						{name}, {time}
+					</header>
+					<footer>
+						<button
+							disabled={isDone}
+							onClick={() =>
+								isRunning ? this.stopTask(id) : this.startTask(id)
+							}>
+							start/stop
+						</button>
+						<button disabled={isDone} onClick={() => this.finishTask(id)}>
+							zakończone
+						</button>
+						<button disabled={!isDone} onClick={() => this.removeTask(id)}>
+							usuń
+						</button>
+					</footer>
+				</div>
+			);
+		});
+	}
+
 	render() {
 		const { tasks, task } = this.state;
 		const filteredTasks = tasks.filter((task) => task.isRemoved === false);
@@ -152,34 +179,7 @@ export default class TasksManager extends Component {
 					/>
 					<input type='submit' value='Dodaj zadanie' />
 				</form>
-				<section>
-					{filteredTasks.map(({ name, time, id, isRunning, isDone }) => {
-						return (
-							<div key={id}>
-								<header>
-									{name}, {time}
-								</header>
-								<footer>
-									<button
-										disabled={isDone}
-										onClick={() =>
-											isRunning ? this.stopTask(id) : this.startTask(id)
-										}>
-										start/stop
-									</button>
-									<button disabled={isDone} onClick={() => this.finishTask(id)}>
-										zakończone
-									</button>
-									<button
-										disabled={!isDone}
-										onClick={() => this.removeTask(id)}>
-										usuń
-									</button>
-								</footer>
-							</div>
-						);
-					})}
-				</section>
+				<section>{this.renderTasks(filteredTasks)}</section>
 			</section>
 		);
 	}
