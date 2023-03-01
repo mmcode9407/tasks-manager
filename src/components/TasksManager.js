@@ -12,13 +12,18 @@ export default class TasksManager extends Component {
 				id: 1,
 			},
 		],
+		task: '',
 	};
 
 	render() {
-		const { tasks } = this.state;
+		const { tasks, task } = this.state;
 
 		return (
 			<section>
+				<form>
+					<input type='text' name='task' value={task} />
+					<input type='submit' value='Dodaj zadanie' />
+				</form>
 				<section>
 					{tasks.map(({ name, time, id }) => {
 						return (
