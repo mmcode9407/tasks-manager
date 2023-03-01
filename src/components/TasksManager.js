@@ -150,6 +150,22 @@ export default class TasksManager extends Component {
 		return errorsBox.map((err, index) => <p key={index}>{err}</p>);
 	}
 
+	createTimer(time) {
+		let hours = Math.floor(time / 3600);
+		let minutes = Math.floor((time - hours * 3600) / 60);
+		let seconds = time % 60;
+
+		hours = this.formatTimeText(hours);
+		minutes = this.formatTimeText(minutes);
+		seconds = this.formatTimeText(seconds);
+
+		return `${hours}:${minutes}:${seconds}`;
+	}
+
+	formatTimeText(unit) {
+		return `0${unit}`.length > 2 ? unit : `0${unit}`;
+	}
+
 	/*  --- RENDERING TASKS ---  */
 
 	renderTasks(tasksToRender) {
@@ -157,7 +173,7 @@ export default class TasksManager extends Component {
 			return (
 				<div key={id}>
 					<header>
-						{name}, {time}
+						{name}, {this.createTimer(time)}
 					</header>
 					<footer>
 						<button
