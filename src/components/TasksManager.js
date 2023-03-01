@@ -9,6 +9,7 @@ export default class TasksManager extends Component {
 	state = {
 		tasks: [],
 		task: '',
+		errors: [],
 	};
 
 	/* --- EVENTS FUNCTIONS ---  */
@@ -38,10 +39,13 @@ export default class TasksManager extends Component {
 				.then(
 					this.setState({
 						task: '',
+						errors: [],
 					})
 				);
 		} else {
-			alert('Nie można dodać pustego zadania!');
+			this.setState({
+				errors: ['Nie można dodać pustego zadania!'],
+			});
 		}
 	};
 
@@ -141,6 +145,10 @@ export default class TasksManager extends Component {
 		});
 	}
 
+	showErrors(errorsBox) {
+		return errorsBox.map((err, index) => <p key={index}>{err}</p>);
+	}
+
 	/*  --- RENDERING TASKS ---  */
 
 	renderTasks(tasksToRender) {
@@ -171,7 +179,7 @@ export default class TasksManager extends Component {
 	}
 
 	render() {
-		const { tasks, task } = this.state;
+		const { tasks, task, errors } = this.state;
 		const filteredTasks = tasks.filter((task) => task.isRemoved === false);
 
 		return (
@@ -185,6 +193,7 @@ export default class TasksManager extends Component {
 					/>
 					<input type='submit' value='Dodaj zadanie' />
 				</form>
+				{errors.length > 0 ? this.showErrors(errors) : null}
 				<section>{this.renderTasks(filteredTasks)}</section>
 			</section>
 		);
