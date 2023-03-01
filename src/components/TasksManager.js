@@ -53,19 +53,20 @@ export default class TasksManager extends Component {
 	startTask = (taskId) => {
 		if (!this.interval) {
 			this.interval = setInterval(() => this.incrementTime(taskId), 1000);
+		} else {
+			this.setState({
+				errors: ['Tylko jedno zadanie może być aktywne'],
+			});
 		}
 	};
 
 	stopTask = (taskId) => {
 		this.clearInterval();
-
 		this.setTaskState(taskId, { isRunning: false });
 	};
 
 	finishTask = (taskId) => {
-		if (this.interval) {
-			this.clearInterval();
-		}
+		this.interval ? this.clearInterval() : null;
 
 		this.setTaskState(taskId, { isRunning: false, isDone: true });
 	};
@@ -121,7 +122,7 @@ export default class TasksManager extends Component {
 				return task;
 			});
 
-			return { tasks: newTasks };
+			return { tasks: newTasks, errors: [] };
 		};
 
 		this.setState(newState, () => {
