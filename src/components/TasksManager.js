@@ -59,6 +59,55 @@ export default class TasksManager extends Component {
 		}
 	}
 
+	startTask = (taskId) => {
+		if (!this.interval) {
+			this.interval = setInterval(() => this.incrementTime(taskId), 1000);
+		}
+	};
+
+	incrementTime(taskId) {
+		const newState = (state) => {
+			const newTasks = state.tasks.map((task) => {
+				if (task.id === taskId) {
+					return { ...task, isRunning: true, time: task.time + 1 };
+				}
+				return task;
+			});
+
+			return { tasks: newTasks };
+		};
+
+		this.setState(newState, () => this.updateTaskInAPI(taskId));
+	}
+
+	stopTask = (taskId) => {
+		clearInterval(this.interval);
+		this.interval = null;
+
+		this.setTaskState(taskId, { isRunning: false });
+	};
+
+	setTaskState(taskId, taskState) {
+		const newState = (state) => {
+			const newTasks = state.tasks.map((task) => {
+				if (task.id === taskId) {
+					return { ...task, ...taskState };
+				}
+				return task;
+			});
+
+			return { tasks: newTasks };
+		};
+
+		this.setState(newState, () => this.updateTaskInAPI(taskId));
+	}
+
+	updateTaskInAPI(taskId) {
+		const { tasks } = this.state;
+		const currTask = tasks.find((task) => task.id === taskId);
+		this.updateData(currTask);
+	}
+
 	render() {
 		const { tasks, task } = this.state;
 
@@ -74,14 +123,19 @@ export default class TasksManager extends Component {
 					<input type='submit' value='Dodaj zadanie' />
 				</form>
 				<section>
-					{tasks.map(({ name, time, id }) => {
+					{tasks.map(({ name, time, id, isRunning }) => {
 						return (
 							<div key={id}>
 								<header>
 									{name}, {time}
 								</header>
 								<footer>
-									<button>start/stop</button>
+									<button
+										onClick={() =>
+											isRunning ? this.stopTask(id) : this.startTask(id)
+										}>
+										start/stop
+									</button>
 									<button>zakończone</button>
 									<button disabled={true}>usuń</button>
 								</footer>
@@ -113,6 +167,16 @@ export default class TasksManager extends Component {
 		};
 
 		return this.fetchData(options);
+	}
+
+	updateData(data) {
+		const options = {
+			method: 'PUT',
+			body: JSON.stringify(data),
+			headers: { 'Content-Type': 'application/json' },
+		};
+
+		return this.fetchData(options, `/${data.id}`);
 	}
 
 	fetchData(options, additionalPath = '') {
