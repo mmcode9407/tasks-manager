@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import { getData, addData, updateData } from './API';
 
 export default class TasksManager extends Component {
-	constructor(props) {
-		super(props);
-		this.API_LINK = 'http://localhost:3005/data';
-	}
-
 	state = {
 		tasks: [],
 		task: '',
