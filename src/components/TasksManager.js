@@ -1,18 +1,41 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-class TasksManager extends React.Component {
-    state = {
-        tasks: [],
-    }
+export default class TasksManager extends Component {
+	state = {
+		tasks: [
+			{
+				name: 'zadanie 1',
+				time: 0,
+				isRunning: false,
+				isDone: false,
+				isRemoved: false,
+				id: 1,
+			},
+		],
+	};
 
-    onClick = () => {
-        const { tasks } = this.state;
-        console.log( tasks)
-    }
+	render() {
+		const { tasks } = this.state;
 
-    render() {
-        return <h1 onClick={ this.onClick }>TasksManager</h1>
-    }
+		return (
+			<section>
+				<section>
+					{tasks.map(({ name, time, id }) => {
+						return (
+							<div key={id}>
+								<header>
+									{name}, {time}
+								</header>
+								<footer>
+									<button>start/stop</button>
+									<button>zakończone</button>
+									<button disabled={true}>usuń</button>
+								</footer>
+							</div>
+						);
+					})}
+				</section>
+			</section>
+		);
+	}
 }
-
-export default TasksManager;
