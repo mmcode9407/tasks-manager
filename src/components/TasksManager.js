@@ -24,30 +24,39 @@ export default class TasksManager extends Component {
 
 		const data = this.createDataForAPI();
 
-		this.addData(data)
-			.then((data) => {
-				this.setState((state) => {
-					return {
-						tasks: [...state.tasks, data],
-					};
-				});
-			})
-			.then(
-				this.setState({
-					task: '',
+		if (data) {
+			this.addData(data)
+				.then((data) => {
+					this.setState((state) => {
+						return {
+							tasks: [...state.tasks, data],
+						};
+					});
 				})
-			);
+				.then(
+					this.setState({
+						task: '',
+					})
+				);
+		} else {
+			alert('Nie można dodać pustego zadania!');
+		}
 	};
 
 	createDataForAPI() {
 		const { task } = this.state;
-		return {
-			name: task,
-			time: 0,
-			isRunning: false,
-			isDone: false,
-			isRemoved: false,
-		};
+
+		if (task !== '') {
+			return {
+				name: task,
+				time: 0,
+				isRunning: false,
+				isDone: false,
+				isRemoved: false,
+			};
+		} else {
+			return null;
+		}
 	}
 
 	render() {
