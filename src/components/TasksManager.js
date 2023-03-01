@@ -11,6 +11,8 @@ export default class TasksManager extends Component {
 		task: '',
 	};
 
+	/* --- EVENTS FUNCTIONS ---  */
+
 	inputChange = (e) => {
 		const { name, value } = e.target;
 
@@ -43,42 +45,11 @@ export default class TasksManager extends Component {
 		}
 	};
 
-	createDataForAPI() {
-		const { task } = this.state;
-
-		if (task !== '') {
-			return {
-				name: task,
-				time: 0,
-				isRunning: false,
-				isDone: false,
-				isRemoved: false,
-			};
-		} else {
-			return null;
-		}
-	}
-
 	startTask = (taskId) => {
 		if (!this.interval) {
 			this.interval = setInterval(() => this.incrementTime(taskId), 1000);
 		}
 	};
-
-	incrementTime(taskId) {
-		const newState = (state) => {
-			const newTasks = state.tasks.map((task) => {
-				if (task.id === taskId) {
-					return { ...task, isRunning: true, time: task.time + 1 };
-				}
-				return task;
-			});
-
-			return { tasks: newTasks };
-		};
-
-		this.setState(newState, () => this.updateTaskInAPI(taskId));
-	}
 
 	stopTask = (taskId) => {
 		this.clearInterval();
@@ -97,6 +68,39 @@ export default class TasksManager extends Component {
 	removeTask = (taskId) => {
 		this.setTaskState(taskId, { isRemoved: true });
 	};
+
+	/*  --- HELPERS ---  */
+
+	createDataForAPI() {
+		const { task } = this.state;
+
+		if (task !== '') {
+			return {
+				name: task,
+				time: 0,
+				isRunning: false,
+				isDone: false,
+				isRemoved: false,
+			};
+		} else {
+			return null;
+		}
+	}
+
+	incrementTime(taskId) {
+		const newState = (state) => {
+			const newTasks = state.tasks.map((task) => {
+				if (task.id === taskId) {
+					return { ...task, isRunning: true, time: task.time + 1 };
+				}
+				return task;
+			});
+
+			return { tasks: newTasks };
+		};
+
+		this.setState(newState, () => this.updateTaskInAPI(taskId));
+	}
 
 	clearInterval() {
 		clearInterval(this.interval);
@@ -136,6 +140,8 @@ export default class TasksManager extends Component {
 			tasks: sortedTasks,
 		});
 	}
+
+	/*  --- RENDERING TASKS ---  */
 
 	renderTasks(tasksToRender) {
 		return tasksToRender.map(({ name, time, id, isRunning, isDone }) => {
