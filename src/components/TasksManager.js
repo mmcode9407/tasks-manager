@@ -177,9 +177,7 @@ export default class TasksManager extends Component {
 
 	componentDidMount() {
 		this.getData().then((data) => {
-			this.setState({
-				tasks: data,
-			});
+			this.sortTask(data);
 		});
 	}
 
