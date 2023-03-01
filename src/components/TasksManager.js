@@ -15,13 +15,26 @@ export default class TasksManager extends Component {
 		task: '',
 	};
 
+	inputChange = (e) => {
+		const { name, value } = e.target;
+
+		this.setState({
+			[name]: value,
+		});
+	};
+
 	render() {
 		const { tasks, task } = this.state;
 
 		return (
 			<section>
 				<form>
-					<input type='text' name='task' value={task} />
+					<input
+						type='text'
+						name='task'
+						value={task}
+						onChange={this.inputChange}
+					/>
 					<input type='submit' value='Dodaj zadanie' />
 				</form>
 				<section>
