@@ -81,11 +81,23 @@ export default class TasksManager extends Component {
 	}
 
 	stopTask = (taskId) => {
-		clearInterval(this.interval);
-		this.interval = null;
+		this.clearInterval();
 
 		this.setTaskState(taskId, { isRunning: false });
 	};
+
+	finishTask = (taskId) => {
+		if (this.interval) {
+			this.clearInterval();
+		}
+
+		this.setTaskState(taskId, { isRunning: false, isDone: true });
+	};
+
+	clearInterval() {
+		clearInterval(this.interval);
+		this.interval = null;
+	}
 
 	setTaskState(taskId, taskState) {
 		const newState = (state) => {
@@ -123,7 +135,7 @@ export default class TasksManager extends Component {
 					<input type='submit' value='Dodaj zadanie' />
 				</form>
 				<section>
-					{tasks.map(({ name, time, id, isRunning }) => {
+					{tasks.map(({ name, time, id, isRunning, isDone }) => {
 						return (
 							<div key={id}>
 								<header>
@@ -131,13 +143,16 @@ export default class TasksManager extends Component {
 								</header>
 								<footer>
 									<button
+										disabled={isDone}
 										onClick={() =>
 											isRunning ? this.stopTask(id) : this.startTask(id)
 										}>
 										start/stop
 									</button>
-									<button>zakończone</button>
-									<button disabled={true}>usuń</button>
+									<button disabled={isDone} onClick={() => this.finishTask(id)}>
+										zakończone
+									</button>
+									<button disabled={!isDone}>usuń</button>
 								</footer>
 							</div>
 						);
