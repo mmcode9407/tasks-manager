@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { getData, addData, updateData } from './API';
 
 export default class TasksManager extends Component {
 	constructor(props) {
@@ -28,7 +29,7 @@ export default class TasksManager extends Component {
 		const data = this.createDataForAPI();
 
 		if (data) {
-			this.addData(data)
+			addData(data)
 				.then((data) => {
 					this.setState((state) => {
 						return {
@@ -132,7 +133,7 @@ export default class TasksManager extends Component {
 	updateTaskInAPI(taskId) {
 		const { tasks } = this.state;
 		const currTask = tasks.find((task) => task.id === taskId);
-		this.updateData(currTask);
+		updateData(currTask);
 	}
 
 	sortTask(tasks) {
@@ -200,43 +201,8 @@ export default class TasksManager extends Component {
 	}
 
 	componentDidMount() {
-		this.getData().then((data) => {
+		getData().then((data) => {
 			this.sortTask(data);
-		});
-	}
-
-	getData() {
-		return this.fetchData();
-	}
-
-	addData(data) {
-		const options = {
-			method: 'POST',
-			body: JSON.stringify(data),
-			headers: { 'Content-Type': 'application/json' },
-		};
-
-		return this.fetchData(options);
-	}
-
-	updateData(data) {
-		const options = {
-			method: 'PUT',
-			body: JSON.stringify(data),
-			headers: { 'Content-Type': 'application/json' },
-		};
-
-		return this.fetchData(options, `/${data.id}`);
-	}
-
-	fetchData(options, additionalPath = '') {
-		const API_URL = `${this.API_LINK}${additionalPath}`;
-
-		return fetch(API_URL, options).then((resp) => {
-			if (resp.ok) {
-				return resp.json();
-			}
-			throw new Error(resp.status);
 		});
 	}
 }
