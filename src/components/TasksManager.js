@@ -217,4 +217,8 @@ export default class TasksManager extends Component {
 			this.sortTask(data);
 		});
 	}
+
+	componentWillUnmount() {
+		this.clearInterval();
+	}
 }
