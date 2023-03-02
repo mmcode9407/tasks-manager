@@ -48,9 +48,12 @@ export default class TasksManager extends Component {
 	startTask = (taskId) => {
 		if (!this.interval) {
 			this.interval = setInterval(() => this.incrementTime(taskId), 1000);
+			this.setState({
+				errors: [],
+			});
 		} else {
 			this.setState({
-				errors: ['Tylko jedno zadanie może być aktywne'],
+				errors: ['Tylko jedno zadanie może być aktywne!'],
 			});
 		}
 	};
@@ -143,7 +146,11 @@ export default class TasksManager extends Component {
 	}
 
 	showErrors(errorsBox) {
-		return errorsBox.map((err, index) => <p key={index}>{err}</p>);
+		return errorsBox.map((err, index) => (
+			<p className='manager__errors-text' key={index}>
+				{err}
+			</p>
+		));
 	}
 
 	createTimer(time) {
@@ -196,17 +203,30 @@ export default class TasksManager extends Component {
 		const filteredTasks = tasks.filter((task) => task.isRemoved === false);
 
 		return (
-			<section>
-				<form onSubmit={this.submitHandler}>
-					<input
-						type='text'
-						name='task'
-						value={task}
-						onChange={this.inputChange}
-					/>
-					<input type='submit' value='Dodaj zadanie' />
-				</form>
-				{errors.length > 0 ? this.showErrors(errors) : null}
+			<section className='manager wrapper'>
+				<header className='manager__header'>
+					<h1 className='manager__title'>TaskManager</h1>
+					<form className='manager__form' onSubmit={this.submitHandler}>
+						<h2 className='manager__form-title'>Dodaj zadanie:</h2>
+						<input
+							type='text'
+							name='task'
+							value={task}
+							onChange={this.inputChange}
+							className='manager__form-input'
+							placeholder='Wpisz treść zadania...'
+						/>
+						<input
+							className='manager__form-button'
+							type='submit'
+							value='Dodaj zadanie'
+						/>
+					</form>
+				</header>
+				<div className='manager__errors'>
+					{errors.length > 0 ? this.showErrors(errors) : null}
+				</div>
+
 				<section>{this.renderTasks(filteredTasks)}</section>
 			</section>
 		);
