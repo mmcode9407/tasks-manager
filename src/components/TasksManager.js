@@ -174,22 +174,30 @@ export default class TasksManager extends Component {
 	renderTasks(tasksToRender) {
 		return tasksToRender.map(({ name, time, id, isRunning, isDone }) => {
 			return (
-				<div key={id}>
-					<header>
-						{name}, {this.createTimer(time)}
+				<div key={id} className='manager__task task'>
+					<header className='task__header'>
+						<h3 className='task__header-title'>{name}</h3>
+						<p className='task__header-timer'>{this.createTimer(time)}</p>
 					</header>
-					<footer>
+					<footer className='task__footer'>
 						<button
 							disabled={isDone}
 							onClick={() =>
 								isRunning ? this.stopTask(id) : this.startTask(id)
-							}>
+							}
+							className='task__btn task__btn--run'>
 							start/stop
 						</button>
-						<button disabled={isDone} onClick={() => this.finishTask(id)}>
+						<button
+							disabled={isDone}
+							onClick={() => this.finishTask(id)}
+							className='task__btn task__btn--finish'>
 							zakończone
 						</button>
-						<button disabled={!isDone} onClick={() => this.removeTask(id)}>
+						<button
+							disabled={!isDone}
+							onClick={() => this.removeTask(id)}
+							className='task__btn task__btn--delete'>
 							usuń
 						</button>
 					</footer>
@@ -227,7 +235,13 @@ export default class TasksManager extends Component {
 					{errors.length > 0 ? this.showErrors(errors) : null}
 				</div>
 
-				<section>{this.renderTasks(filteredTasks)}</section>
+				<section className='manager__task-box'>
+					{filteredTasks.length > 0 ? (
+						this.renderTasks(filteredTasks)
+					) : (
+						<p>Brak aktywnych zadań na liście...</p>
+					)}
+				</section>
 			</section>
 		);
 	}
