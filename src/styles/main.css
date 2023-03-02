@@ -1,17 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 * {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 }
 
+html {
+	font-size: 62.5%;
+	font-family: 'Montserrat', sans-serif;
+}
+
 body {
 	background: #272d42;
+}
+
+input {
+	font-size: 1.4em;
+}
+
+h1 {
+	font-size: 3.6rem;
+}
+
+h2 {
+	font-size: 2.4rem;
+}
+
+h3 {
+	font-size: 1.6rem;
+}
+
+p {
+	font-size: 1.6rem;
+}
+
+h1,
+h2,
+h3,
+p {
+	color: #fff;
 }
 
 .wrapper {
 	max-width: 1440px;
 	width: 100%;
 	margin: 0 auto;
+}
+
+.button {
+	width: 100%;
+	padding: 0.7em 2.2em;
+	background-color: #fff;
+	border-radius: 8px;
+	text-transform: uppercase;
+	text-align: center;
+	cursor: pointer;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.button:not([disabled]):hover {
+	background-color: #272d42;
+	color: #ddd;
+}
+
+.button:disabled {
+	cursor: not-allowed;
 }
 
 /* --- HEADER --- */
@@ -21,64 +75,47 @@ body {
 	top: 0;
 	left: 0;
 	min-height: 100vh;
+	padding-bottom: 5em;
 }
 
 .manager__header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 40px 60px;
+	flex-wrap: wrap;
+	padding: 4em 6em;
 	background-color: #0f162d;
+	box-shadow: 0 5px 5px #000;
 }
 
 .manager__title {
-	color: #fff;
-	font-size: 36px;
+	letter-spacing: 3px;
 }
 
 .manager__form {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 2em;
 	max-width: 300px;
 	width: 100%;
 }
 
-.manager__form-title {
-	color: #fff;
-	font-size: 16px;
-}
-
 .manager__form-input {
 	width: 100%;
-	padding: 4px;
+	padding: 0.3em;
 	border: 1px solid #000;
 	border-radius: 5px;
 }
 
-.manager__form-button {
-	width: 50%;
-	padding: 10px 0;
-	background-color: #fff;
-	border: 1px solid #000;
-	border-radius: 8px;
-	text-transform: uppercase;
-	text-align: center;
-	cursor: pointer;
-	transition: background-color 0.3s, color 0.3s;
-}
-
-.manager__form-button:hover {
-	background-color: #272d42;
-	color: #ddd;
-}
-
 .manager__errors {
-	position: absolute;
-	top: 170px;
-	left: 50%;
-	transform: translateX(-50%);
-	color: red;
+	width: 100%;
+	min-height: 20px;
+	margin-top: 2em;
+	text-align: center;
+}
+
+.manager__errors-text {
+	color: #ff0000;
 }
 
 /* --- TASKS SECTION --- */
@@ -104,6 +141,7 @@ body {
 
 	background-color: #0f162d;
 	animation: showTask linear 0.5s both;
+	box-shadow: 3px 3px 5px #000;
 }
 
 .task__header {
@@ -111,32 +149,20 @@ body {
 }
 
 .task__header-title {
-	padding: 5px;
+	padding: 0.3em;
 	font-weight: normal;
-	color: #fff;
 }
 
 .task__header-timer {
+	font-size: 2.4rem;
 	font-weight: bold;
-	font-size: 24px;
-	color: #fff;
 }
 
 .task__footer {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
-	gap: 5px;
-}
-
-.task__btn {
-	padding: 10px 30px;
-	text-transform: uppercase;
-	background-color: #fff;
-	border: 1px solid #000;
-	border-radius: 8px;
-	cursor: pointer;
-	transition: background-color 0.3s, color 0.3s;
+	gap: 0.5em;
 }
 
 .task__btn--run:not([disabled]) {
@@ -152,15 +178,6 @@ body {
 	color: #fff;
 }
 
-.task__btn:not([disabled]):hover {
-	background-color: #272d42;
-	color: #ddd;
-}
-
-.task__btn:disabled {
-	cursor: not-allowed;
-}
-
 @keyframes showTask {
 	0% {
 		opacity: 0;
@@ -173,19 +190,15 @@ body {
 @media (max-width: 768px) {
 	.manager__header {
 		flex-direction: column;
-		gap: 20px;
-		padding: 40px 10px;
+		gap: 2em;
+		padding: 4em 1em;
 	}
 
 	.manager__form {
 		align-items: center;
 	}
 
-	.manager__errors {
-		position: absolute;
-		top: 230px;
-		left: 50%;
-		transform: translateX(-50%);
-		color: red;
+	.manager__task-box {
+		padding: 0 20px;
 	}
 }

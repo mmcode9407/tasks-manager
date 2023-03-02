@@ -24,20 +24,15 @@ export default class TasksManager extends Component {
 		const data = this.createDataForAPI();
 
 		if (data) {
-			addData(data)
-				.then((data) => {
-					this.setState((state) => {
-						return {
-							tasks: [...state.tasks, data],
-						};
-					});
-				})
-				.then(
-					this.setState({
+			addData(data).then((data) => {
+				this.setState((state) => {
+					return {
+						tasks: [...state.tasks, data],
 						task: '',
 						errors: [],
-					})
-				);
+					};
+				});
+			});
 		} else {
 			this.setState({
 				errors: ['Nie można dodać pustego zadania!'],
@@ -185,19 +180,19 @@ export default class TasksManager extends Component {
 							onClick={() =>
 								isRunning ? this.stopTask(id) : this.startTask(id)
 							}
-							className='task__btn task__btn--run'>
-							start/stop
+							className='task__btn task__btn--run button'>
+							{isRunning ? 'stop' : 'start'}
 						</button>
 						<button
 							disabled={isDone}
 							onClick={() => this.finishTask(id)}
-							className='task__btn task__btn--finish'>
+							className='task__btn task__btn--finish button'>
 							zakończone
 						</button>
 						<button
 							disabled={!isDone}
 							onClick={() => this.removeTask(id)}
-							className='task__btn task__btn--delete'>
+							className='task__btn task__btn--delete button'>
 							usuń
 						</button>
 					</footer>
@@ -222,24 +217,27 @@ export default class TasksManager extends Component {
 							value={task}
 							onChange={this.inputChange}
 							className='manager__form-input'
-							placeholder='Wpisz treść zadania...'
+							placeholder='Podaj treść zadania...'
 						/>
+
 						<input
-							className='manager__form-button'
+							className='manager__form-button button'
 							type='submit'
 							value='Dodaj zadanie'
 						/>
 					</form>
+					<div className='manager__errors'>
+						{errors.length > 0 ? this.showErrors(errors) : null}
+					</div>
 				</header>
-				<div className='manager__errors'>
-					{errors.length > 0 ? this.showErrors(errors) : null}
-				</div>
 
 				<section className='manager__task-box'>
 					{filteredTasks.length > 0 ? (
 						this.renderTasks(filteredTasks)
 					) : (
-						<p>Brak aktywnych zadań na liście...</p>
+						<p className='manager__task-box-text'>
+							Brak aktywnych zadań na liście...
+						</p>
 					)}
 				</section>
 			</section>
