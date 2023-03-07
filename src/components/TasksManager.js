@@ -245,8 +245,24 @@ export default class TasksManager extends Component {
 	}
 
 	componentDidMount() {
-		getData().then((data) => {
-			this.sortTask(data);
+		getData().then((tasks) => {
+			const newTasks = tasks.map((task) => {
+				if (task.isRunning === true) {
+					const newTask = { ...task, isRunning: false };
+					updateData(newTask);
+					return newTask;
+				}
+				return task;
+			});
+
+			this.setState(
+				{
+					tasks: newTasks,
+				},
+				() => {
+					this.sortTask(this.state.tasks);
+				}
+			);
 		});
 	}
 
