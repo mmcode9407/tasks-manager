@@ -34,9 +34,7 @@ export default class TasksManager extends Component {
 				});
 			});
 		} else {
-			this.setState({
-				errors: ['Nie można dodać pustego zadania!'],
-			});
+			this.addError('Nie można dodać pustego zadania!');
 		}
 	};
 
@@ -47,9 +45,7 @@ export default class TasksManager extends Component {
 				errors: [],
 			});
 		} else {
-			this.setState({
-				errors: ['Tylko jedno zadanie może być aktywne!'],
-			});
+			this.addError('Tylko jedno zadanie może być aktywne!');
 		}
 	};
 
@@ -138,6 +134,13 @@ export default class TasksManager extends Component {
 		this.setState({
 			tasks: sortedTasks,
 		});
+	}
+
+	addError(errMsg) {
+		const { errors } = this.state;
+		if (!errors.includes(errMsg)) {
+			this.setState((state) => ({ errors: [...state.errors, errMsg] }));
+		}
 	}
 
 	showErrors(errorsBox) {
